@@ -2,12 +2,13 @@ package models
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/orm"
 )
 
 var DefaultTaskList *TaskManager
 
 type Task struct {
-	ID    int64  // Unique identifier
+	Id    int64  // Unique identifier
 	Title string // Description
 	Done  bool   // Is this task done?
 }
@@ -33,15 +34,15 @@ func NewTaskManager() *TaskManager {
 
 // Save saves the given Task in the TaskManager.
 func (m *TaskManager) Save(task *Task) error {
-	if task.ID == 0 {
+	if task.Id == 0 {
 		m.lastID++
-		task.ID = m.lastID
+		task.Id = m.lastID
 		m.tasks = append(m.tasks, cloneTask(task))
 		return nil
 	}
 
 	for i, t := range m.tasks {
-		if t.ID == task.ID {
+		if t.Id == task.Id {
 			m.tasks[i] = cloneTask(task)
 			return nil
 		}
@@ -64,7 +65,7 @@ func (m *TaskManager) All() []*Task {
 // indicating if the id was found.
 func (m *TaskManager) Find(ID int64) (*Task, bool) {
 	for _, t := range m.tasks {
-		if t.ID == ID {
+		if t.Id == ID {
 			return t, true
 		}
 	}
@@ -73,4 +74,5 @@ func (m *TaskManager) Find(ID int64) (*Task, bool) {
 
 func init() {
 	DefaultTaskList = NewTaskManager()
+	orm.RegisterModel(new(Task))
 }

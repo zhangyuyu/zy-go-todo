@@ -58,7 +58,8 @@ func (this *TaskController) GetTask() {
 	id := this.Ctx.Input.Param(":id")
 	beego.Info("Task is ", id)
 	intid, _ := strconv.ParseInt(id, 10, 64)
-	t, ok := models.DefaultTaskList.Find(intid)
+	//t, ok := models.DefaultTaskList.Find(intid)
+	t, ok := models.Find(intid)
 	beego.Info("Found", ok)
 	if !ok {
 		this.Ctx.Output.SetStatus(404)
@@ -86,7 +87,7 @@ func (this *TaskController) UpdateTask() {
 		this.Ctx.Output.Body([]byte(err.Error()))
 		return
 	}
-	if t.ID != intid {
+	if t.Id != intid {
 		this.Ctx.Output.SetStatus(400)
 		this.Ctx.Output.Body([]byte("inconsistent task IDs"))
 		return

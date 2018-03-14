@@ -1,0 +1,13 @@
+CREATE DATABASE `zy_todo`;
+
+USE `zy_todo`;
+
+CREATE TABLE `task` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(30) NOT NULL,
+  `done` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `task` VALUES (1, 'GO', 0);

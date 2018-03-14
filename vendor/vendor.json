@@ -45,6 +45,12 @@
 			"revisionTime": "2017-12-18T11:18:59Z"
 		},
 		{
+			"checksumSHA1": "MoE8R3ctm+nYy6PL5BNqelLtN04=",
+			"path": "github.com/astaxie/beego/orm",
+			"revision": "f16688817aa428d10361394015b40d096b680542",
+			"revisionTime": "2017-12-18T11:18:59Z"
+		},
+		{
 			"checksumSHA1": "EDaMYv6yHO6Xu9J8loeGIUOvGoE=",
 			"path": "github.com/astaxie/beego/session",
 			"revision": "f16688817aa428d10361394015b40d096b680542",
@@ -61,6 +67,12 @@
 			"path": "github.com/astaxie/beego/utils",
 			"revision": "f16688817aa428d10361394015b40d096b680542",
 			"revisionTime": "2017-12-18T11:18:59Z"
+		},
+		{
+			"checksumSHA1": "K6icEVf2CuBzhLm/MGpRd1btshM=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "1a676ac6e4dce68e9303a1800773861350374a9e",
+			"revisionTime": "2018-03-08T10:03:10Z"
 		}
 	],
 	"rootPath": "github.com/zhangyuyu/zy-go-todo"

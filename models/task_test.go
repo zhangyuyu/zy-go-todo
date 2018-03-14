@@ -96,7 +96,7 @@ func TestSaveAndFind(t *testing.T) {
 	m := NewTaskManager()
 	m.Save(task)
 
-	nt, ok := m.Find(task.ID)
+	nt, ok := m.Find(task.Id)
 	if !ok {
 		t.Errorf("didn't find task")
 	}
