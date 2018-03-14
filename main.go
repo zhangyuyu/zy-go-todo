@@ -10,22 +10,24 @@ import (
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	mysqlReg := os.Getenv("DATABASE_URL")
 
-	if mysqlReg == "" {
-		mysqlReg = beego.AppConfig.String("mysqluser") + ":" +
-			beego.AppConfig.String("mysqlpass") + "@" +
-			beego.AppConfig.String("mysqlhost") + "/" +
-			beego.AppConfig.String("mysqldb")
-	}
+	mysqlReg := getEnvValue("DB_USERNAME") + ":" +
+		getEnvValue("DB_PASSWORD") + "@tcp(" +
+		getEnvValue("DB_HOST") + ":3306)/" +
+		getEnvValue("DB_DATABASE")
 
 	orm.RegisterDataBase("default", "mysql", mysqlReg)
 }
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "9090"
-	}
+	port := getEnvValue("PORT")
 	beego.Run(":" + port)
+}
+
+func getEnvValue(key string) string {
+	if os.Getenv(key) != "" {
+		return os.Getenv(key)
+	} else {
+		return beego.AppConfig.String(key)
+	}
 }

@@ -90,10 +90,17 @@ heroku addons:create cleardb:ignite
 
 heroku config | grep CLEARDB_DATABASE_URL
 
-heroku config:set DATABASE_URL='去掉上一步结果中的mysql://'
+heroku config:set DB_USERNAME=b8564e6d9298c9
+heroku config:set DB_PASSWORD=password
+heroku config:set DB_HOST=us-cdbr-iron-east-05.cleardb.net
+heroku config:set DB_DATABASE=heroku_2a001fea285944b
+
 ```
+程序会将上述环境变量，拼出来DATABASE_URL结构如下：
+DATABASE_URL='user:pass@tcp(us-cdbr-iron-east-05.cleardb.net:3306)/your_heroku_database'
+
 ### 3. 链接数据库，创建初始数据
-用上述DATABASE_UR中的`username:password@host/databse`连接到数据库，手动创建Table `Task`
+用上述DATABASE_UR中的`user:pass@host/databse`连接到数据库，手动创建Table `Task`
 ```sql
 
 CREATE TABLE `task` (
@@ -114,3 +121,5 @@ INSERT INTO `task` VALUES (1, 'GO', 0);
 * [Building Web Apps with Go](https://www.gitbook.com/book/codegangsta/building-web-apps-with-go/details)
 * [Getting Started with Go on Heroku](https://github.com/heroku/go-getting-started)
 * [The Vendor Tool for Go](https://github.com/kardianos/govendor)
+* [Heroku cleardb connection default addr for network unknown
+](https://stackoverflow.com/questions/43562091/heroku-cleardb-connection-default-addr-for-network-unknown)
