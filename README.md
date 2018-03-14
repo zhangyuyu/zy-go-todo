@@ -81,6 +81,35 @@ Golang ToDo web application on Heroku.
     https://dashboard.heroku.com/apps/zy-go-todo
     ```
 
+## 三、数据库ClearDb mysql
+### 1. 代码准备
+
+### 2. Heroku创建数据库
+```
+heroku addons:create cleardb:ignite
+
+heroku config | grep CLEARDB_DATABASE_URL
+
+heroku config:set DATABASE_URL='去掉上一步结果中的mysql://'
+```
+### 3. 链接数据库，创建初始数据
+用上述DATABASE_UR中的`username:password@host/databse`连接到数据库，手动创建Table `Task`
+```sql
+
+CREATE TABLE `task` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(30) NOT NULL,
+  `done` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `task` VALUES (1, 'GO', 0);
+```
+
+4. 获取初始数据
+`https://zy-go-todo.herokuapp.com/task/1`
+
 ## 参考
 * [Building Web Apps with Go](https://www.gitbook.com/book/codegangsta/building-web-apps-with-go/details)
 * [Getting Started with Go on Heroku](https://github.com/heroku/go-getting-started)
