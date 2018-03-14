@@ -10,9 +10,15 @@ import (
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	mysqlReg := beego.AppConfig.String("mysqluser") + ":" +
-		beego.AppConfig.String("mysqlpass") + "@tcp(127.0.0.1:3306)/" +
-		beego.AppConfig.String("mysqldb")
+	mysqlReg := os.Getenv("DATABASE_URL")
+
+	if mysqlReg == "" {
+		mysqlReg = beego.AppConfig.String("mysqluser") + ":" +
+			beego.AppConfig.String("mysqlpass") + "@" +
+			beego.AppConfig.String("mysqlhost") + "/" +
+			beego.AppConfig.String("mysqldb")
+	}
+
 	orm.RegisterDataBase("default", "mysql", mysqlReg)
 }
 
