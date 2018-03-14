@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"github.com/zhangyuyu/hello/controllers"
+	"github.com/zhangyuyu/zy-go-todo/controllers"
 	"github.com/astaxie/beego"
 )
 
