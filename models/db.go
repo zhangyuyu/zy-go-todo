@@ -13,7 +13,6 @@ func FindTask(id int64) (*Task, error) {
 	return &task, err
 }
 
-
 func FindAllTask() ([]*Task, error) {
 	o := orm.NewOrm()
 	var tasks []*Task
@@ -38,4 +37,12 @@ func UpdateTask(task Task) (*Task, error) {
 
 	_, err := o.Update(&task, "Done")
 	return &task, err
+}
+
+func DeleteTask(id int64) error {
+	task := Task{Id: id}
+
+	o := orm.NewOrm()
+	_, err := o.Delete(&task)
+	return err
 }

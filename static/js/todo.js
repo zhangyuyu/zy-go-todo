@@ -19,7 +19,7 @@ function TaskCtrl($scope, $http) {
         }).error(logError);
     };
 
-    $scope.addTodo = function () {
+    $scope.addTask = function () {
         $scope.working = true;
         $http.post('/tasks/', {Title: $scope.todoText}).error(logError).success(function () {
             refresh().then(function () {
@@ -35,6 +35,15 @@ function TaskCtrl($scope, $http) {
             task.Done = !task.Done
         });
     };
+
+    $scope.deleteTask = function (task) {
+        $http.delete('/tasks/' + task.Id).error(logError).success(function () {
+            refresh().then(function () {
+                $scope.working = false;
+                $scope.todoText = '';
+            })
+        });
+    }
 
     refresh().then(function () {
         $scope.working = false;

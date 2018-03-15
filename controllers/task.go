@@ -13,11 +13,11 @@ type TaskController struct {
 
 // Example:
 //
-//   req: GET /task/
-//   res: 200 {"Tasks": [
+//   req: GET /tasks/
+//   res: 200 [
 //          {"ID": 1, "Title": "Learn Go", "Done": false},
 //          {"ID": 2, "Title": "Buy bread", "Done": true}
-//        ]}
+//        ]
 func (this *TaskController) ListTasks() {
 	beego.Info("Listing All Tasks")
 	tasks, err := models.FindAllTask()
@@ -32,10 +32,10 @@ func (this *TaskController) ListTasks() {
 
 // Examples:
 //
-//   req: POST /task/ {"Title": ""}
+//   req: POST /tasks/ {"Title": ""}
 //   res: 400 empty title
 //
-//   req: POST /task/ {"Title": "Buy bread"}
+//   req: POST /tasks/ {"Title": "Buy bread"}
 //   res: 200
 func (this *TaskController) NewTask() {
 	req := struct{ Title string }{}
@@ -57,10 +57,10 @@ func (this *TaskController) NewTask() {
 
 // Examples:
 //
-//   req: GET /task/1
+//   req: GET /tasks/1
 //   res: 200 {"ID": 1, "Title": "Buy bread", "Done": true}
 //
-//   req: GET /task/42
+//   req: GET /tasks/42
 //   res: 404 task not found
 func (this *TaskController) GetTask() {
 	id := this.Ctx.Input.Param(":id")
@@ -78,10 +78,10 @@ func (this *TaskController) GetTask() {
 
 // Example:
 //
-//   req: PUT /task/1 {"ID": 1, "Title": "Learn Go", "Done": true}
+//   req: PUT /tasks/1 {"ID": 1, "Title": "Learn Go", "Done": true}
 //   res: 200
 //
-//   req: PUT /task/2 {"ID": 2, "Title": "Learn Go", "Done": true}
+//   req: PUT /tasks/2 {"ID": 2, "Title": "Learn Go", "Done": true}
 //   res: 400 inconsistent task IDs
 func (this *TaskController) UpdateTask() {
 	beego.Info("Updating task")
@@ -102,4 +102,23 @@ func (this *TaskController) UpdateTask() {
 	}
 	this.Data["json"] = task
 	this.ServeJSON()
+}
+
+// Examples:
+//
+//   req: DELETE /tasks/1
+//   res: 200
+//
+//   req: DELETE /tasks/42
+//   res: 404 task not found
+func (this *TaskController) DeleteTask() {
+	id := this.Ctx.Input.Param(":id")
+	beego.Info("Deleting Task taskId : ", id)
+	intid, _ := strconv.ParseInt(id, 10, 64)
+	err := models.DeleteTask(intid)
+	if err != nil {
+		this.Ctx.Output.SetStatus(404)
+		this.Ctx.Output.Body([]byte("task not found"))
+		return
+	}
 }
