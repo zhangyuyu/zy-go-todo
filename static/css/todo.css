@@ -58,7 +58,19 @@ li.done > .checkbox {
 li .delete {
 	float: right;
 	color: mediumvioletred;
-	font-size: 12px;
+	font-size: 15px;
+	border: none;
+	background: #eee;
+}
+
+ul {
+	border: 1px solid grey;
+}
+li {
+	border-bottom: 0.5px dashed grey;
+}
+li:last-child {
+	border:none;
 }
 
 .rounded-box {
