@@ -5,15 +5,37 @@ import (
 	"fmt"
 )
 
-func Find(id int64) (*Task, bool) {
+func FindTask(id int64) (*Task, error) {
 	task := Task{Id: id}
 
 	o := orm.NewOrm()
 	err := o.Read(&task)
-	if err != nil {
-		fmt.Println(err)
-		return nil, false
-	} else {
-		return &task, true
+	return &task, err
+}
+
+
+func FindAllTask() ([]*Task, error) {
+	o := orm.NewOrm()
+	var tasks []*Task
+	_, err := o.QueryTable("task").All(&tasks)
+	return tasks, err
+}
+
+func CreateTask(title string) (*Task, error) {
+	if title == "" {
+		return nil, fmt.Errorf("empty title")
 	}
+	task := Task{0, title, false}
+
+	o := orm.NewOrm()
+	_, err := o.Insert(&task)
+
+	return &task, err
+}
+
+func UpdateTask(task Task) (*Task, error) {
+	o := orm.NewOrm()
+
+	_, err := o.Update(&task, "Done")
+	return &task, err
 }

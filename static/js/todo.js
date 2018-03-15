@@ -5,38 +5,38 @@
 */
 
 function TaskCtrl($scope, $http) {
-  $scope.tasks = [];
-  $scope.working = false;
-
-  var logError = function(data, status) {
-    console.log('code '+status+': '+data);
+    $scope.tasks = [];
     $scope.working = false;
-  };
 
-  var refresh = function() {
-    return $http.get('/task/').
-      success(function(data) { $scope.tasks = data.Tasks; }).
-      error(logError);
-  };
+    var logError = function (data, status) {
+        console.log('code ' + status + ': ' + data);
+        $scope.working = false;
+    };
 
-  $scope.addTodo = function() {
-    $scope.working = true;
-    $http.post('/task/', {Title: $scope.todoText}).
-      error(logError).
-      success(function() {
-        refresh().then(function() {
-          $scope.working = false;
-          $scope.todoText = '';
-        })
-      });
-  };
+    var refresh = function () {
+        return $http.get('/tasks/').success(function (data) {
+            $scope.tasks = data;
+        }).error(logError);
+    };
 
-  $scope.toggleDone = function(task) {
-    data = {ID: task.ID, Title: task.Title, Done: !task.Done}
-    $http.put('/task/'+task.ID, data).
-      error(logError).
-      success(function() { task.Done = !task.Done });
-  };
+    $scope.addTodo = function () {
+        $scope.working = true;
+        $http.post('/tasks/', {Title: $scope.todoText}).error(logError).success(function () {
+            refresh().then(function () {
+                $scope.working = false;
+                $scope.todoText = '';
+            })
+        });
+    };
 
-  refresh().then(function() { $scope.working = false; });
+    $scope.toggleDone = function (task) {
+        data = {Id: task.Id, Title: task.Title, Done: !task.Done}
+        $http.put('/tasks/' + task.Id, data).error(logError).success(function () {
+            task.Done = !task.Done
+        });
+    };
+
+    refresh().then(function () {
+        $scope.working = false;
+    });
 }

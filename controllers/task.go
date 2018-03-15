@@ -19,8 +19,14 @@ type TaskController struct {
 //          {"ID": 2, "Title": "Buy bread", "Done": true}
 //        ]}
 func (this *TaskController) ListTasks() {
-	res := struct{ Tasks []*models.Task }{models.DefaultTaskList.All()}
-	this.Data["json"] = res
+	beego.Info("Listing All Tasks")
+	tasks, err := models.FindAllTask()
+	if err != nil {
+		this.Ctx.Output.SetStatus(400)
+		this.Ctx.Output.Body([]byte(err.Error()))
+		return
+	}
+	this.Data["json"] = tasks
 	this.ServeJSON()
 }
 
@@ -33,18 +39,20 @@ func (this *TaskController) ListTasks() {
 //   res: 200
 func (this *TaskController) NewTask() {
 	req := struct{ Title string }{}
+	beego.Info("Creating a new task", req)
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &req); err != nil {
 		this.Ctx.Output.SetStatus(400)
 		this.Ctx.Output.Body([]byte("empty title"))
 		return
 	}
-	t, err := models.NewTask(req.Title)
+	task, err := models.CreateTask(req.Title)
 	if err != nil {
 		this.Ctx.Output.SetStatus(400)
 		this.Ctx.Output.Body([]byte(err.Error()))
 		return
 	}
-	models.DefaultTaskList.Save(t)
+	this.Data["json"] = task
+	this.ServeJSON()
 }
 
 // Examples:
@@ -56,17 +64,15 @@ func (this *TaskController) NewTask() {
 //   res: 404 task not found
 func (this *TaskController) GetTask() {
 	id := this.Ctx.Input.Param(":id")
-	beego.Info("Task is ", id)
+	beego.Info("Getting Task taskId : ", id)
 	intid, _ := strconv.ParseInt(id, 10, 64)
-	//t, ok := models.DefaultTaskList.Find(intid)
-	t, ok := models.Find(intid)
-	beego.Info("Found", ok)
-	if !ok {
+	task, err := models.FindTask(intid)
+	if err != nil {
 		this.Ctx.Output.SetStatus(404)
 		this.Ctx.Output.Body([]byte("task not found"))
 		return
 	}
-	this.Data["json"] = t
+	this.Data["json"] = task
 	this.ServeJSON()
 }
 
@@ -78,24 +84,22 @@ func (this *TaskController) GetTask() {
 //   req: PUT /task/2 {"ID": 2, "Title": "Learn Go", "Done": true}
 //   res: 400 inconsistent task IDs
 func (this *TaskController) UpdateTask() {
-	id := this.Ctx.Input.Param(":id")
-	beego.Info("Task is ", id)
-	intid, _ := strconv.ParseInt(id, 10, 64)
-	var t models.Task
-	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &t); err != nil {
+	beego.Info("Updating task")
+
+	var task models.Task
+	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &task); err != nil {
 		this.Ctx.Output.SetStatus(400)
 		this.Ctx.Output.Body([]byte(err.Error()))
 		return
 	}
-	if t.Id != intid {
-		this.Ctx.Output.SetStatus(400)
-		this.Ctx.Output.Body([]byte("inconsistent task IDs"))
-		return
-	}
-	if _, ok := models.DefaultTaskList.Find(intid); !ok {
-		this.Ctx.Output.SetStatus(400)
+
+	_, err := models.UpdateTask(task)
+
+	if err != nil {
+		this.Ctx.Output.SetStatus(404)
 		this.Ctx.Output.Body([]byte("task not found"))
 		return
 	}
-	models.DefaultTaskList.Save(&t)
+	this.Data["json"] = task
+	this.ServeJSON()
 }
