@@ -51,6 +51,12 @@
 			"revisionTime": "2017-12-18T11:18:59Z"
 		},
 		{
+			"checksumSHA1": "kQSheQ6il6bSgWuELtamEZsNUtg=",
+			"path": "github.com/astaxie/beego/plugins/auth",
+			"revision": "f16688817aa428d10361394015b40d096b680542",
+			"revisionTime": "2017-12-18T11:18:59Z"
+		},
+		{
 			"checksumSHA1": "EDaMYv6yHO6Xu9J8loeGIUOvGoE=",
 			"path": "github.com/astaxie/beego/session",
 			"revision": "f16688817aa428d10361394015b40d096b680542",
