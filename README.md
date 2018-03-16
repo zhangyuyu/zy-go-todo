@@ -117,6 +117,22 @@ INSERT INTO `task` VALUES (1, 'GO', 0);
 4. 获取初始数据
 `https://zy-go-todo.herokuapp.com/task/1`
 
+## 四、问题
+Beego & Angular JS ajax Redirect
+* 问题描述
+点击【退出】之后，页面并未进行跳转
+
+* 具体细节
+** 点击【退出】，路由跳转`/logout`
+** 随后会重定向到`/login`
+** task.js里面打印的data可以看出已经是`login.html`的页面代码
+
+* 原因
+ajax无法获得控制页面跳转的参数，可以参见(beego的局限性和解决登录跳转问题)[http://blog.csdn.net/github_37320188/article/details/79107380]
+
+* 暂定措施
+改成`<form>`提交，可以参见(beego redirect跳转问题)[https://github.com/astaxie/beego/issues/2565]
+
 ## 参考
 * [Building Web Apps with Go](https://www.gitbook.com/book/codegangsta/building-web-apps-with-go/details)
 * [Getting Started with Go on Heroku](https://github.com/heroku/go-getting-started)

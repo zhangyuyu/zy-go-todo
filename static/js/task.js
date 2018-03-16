@@ -45,11 +45,12 @@ function TaskCtrl($scope, $http) {
         });
     };
 
-    $scope.logout = function () {
-        $http.get('/logout').error(logError).success(function () {
-            console.log("============logout")
-        });
-    };
+    // $scope.logout = function () {
+    //     $http.get('/logout').error(logError).success(function (data) {
+    //         console.log("============logout")
+    //         console.log(data)
+    //     });
+    // };
 
     refresh().then(function () {
         $scope.working = false;

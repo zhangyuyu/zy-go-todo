@@ -4,15 +4,16 @@
 <head>
     <title>TODO</title>
     <script src='/static/js/angular.min.js'></script>
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/static/css/task.css'>
     <script src='/static/js/task.js'></script>
 </head>
 
 <body>
 <div class='container' ng-controller='TaskCtrl'>
+    <form action="logout" method="get">
     你好，<span class="username">{{<.Username >}}</span>
-    <span class="logout" ng-click='logout()'>退出</span>
+    <button class="logout" type="submit">退出</button>
+    </form>
 
     <h1 class='charcoal rounded-box'>ToDo</h1>
 

@@ -107,6 +107,8 @@ input {
 span.username {
 	text-decoration: underline;
 }
-span.logout {
+.logout {
 	float: right;
+	border: none;
+	background-color: #f8f8f8;
 }
