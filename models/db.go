@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"fmt"
+	"errors"
 )
 
 func FindTask(id int64) (*Task, error) {
@@ -45,4 +46,25 @@ func DeleteTask(id int64) error {
 	o := orm.NewOrm()
 	_, err := o.Delete(&task)
 	return err
+}
+
+func FindUser(username string) (*User, error) {
+	user := User{Username: username}
+
+	o := orm.NewOrm()
+	err := o.Read(&user, "username")
+	return &user, err
+}
+
+func ValidateUser(user User, password string) error {
+	u, err := FindUser(user.Username)
+
+	if err != nil {
+		return errors.New("用户名或密码错误！")
+	}
+
+	if u.Password != password {
+		return errors.New("密码错误！")
+	}
+	return nil
 }

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego/plugins/auth"
+	"github.com/astaxie/beego/context"
 	_ "github.com/zhangyuyu/zy-go-todo/routers"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
@@ -21,8 +21,8 @@ func init() {
 }
 
 func main() {
-	authPlugin := auth.NewBasicAuthenticator(SecretAuth, "My Realm")
-	beego.InsertFilter("*", beego.BeforeRouter, authPlugin)
+	beego.BConfig.WebConfig.Session.SessionOn = true
+	beego.InsertFilter("/", beego.BeforeRouter, FilterUser)
 
 	port := getEnvValue("PORT")
 	beego.Run(":" + port)
@@ -36,14 +36,9 @@ func getEnvValue(key string) string {
 	}
 }
 
-func SecretAuth(username, password string) bool {
-	// The username and password parameters comes from the request header,
-	// make a database lookup to make sure the username/password pair exist
-	// and return true if they do, false if they dont.
-
-	// To keep this example simple, lets just hardcode "hello" and "world" as username,password
-	if username == "hello" && password == "world" {
-		return true
+var FilterUser = func(ctx *context.Context) {
+	_, ok := ctx.Input.Session("userLogin").(string)
+	if !ok && ctx.Request.RequestURI != "/login" {
+		ctx.Redirect(302, "/login")
 	}
-	return false
 }
