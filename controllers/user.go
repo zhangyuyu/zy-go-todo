@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"fmt"
 	"github.com/zhangyuyu/zy-go-todo/models"
 )
 
@@ -23,8 +22,8 @@ func (this *UserLoginController) Login() {
 	err := models.ValidateUser(user, password)
 	if err == nil {
 		u, _ := models.FindUser(user.Username)
-		this.SetSession("userLogin", fmt.Sprintf("%d", u.Id))
-		this.SetSession("username", fmt.Sprintf("%s", u.Username))
+		this.SetSession("userLogin", u.Id)
+		this.SetSession("username", u.Username)
 		this.Redirect("/", 302)
 	} else {
 		this.TplName = "login.html"
@@ -37,7 +36,7 @@ type UserLogoutController struct {
 	beego.Controller
 }
 
-func (this *UserLogoutController) Get() {
+func (this *UserLogoutController) Logout() {
 	this.DelSession("userLogin")
 	this.DelSession("username")
 	this.Redirect("/login", 302)

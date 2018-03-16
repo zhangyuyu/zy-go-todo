@@ -103,3 +103,10 @@ input {
 .spinner.working {
 	display: block;
 }
+
+span.username {
+	text-decoration: underline;
+}
+span.logout {
+	float: right;
+}

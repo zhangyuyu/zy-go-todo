@@ -15,6 +15,7 @@ func (this *IndexController) Get() {
 		this.Redirect("/login", 302)
 	} else {
 		this.TplName = "index.html"
+		this.Data["Username"] = username
 		this.Render()
 	}
 }

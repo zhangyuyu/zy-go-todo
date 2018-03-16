@@ -11,6 +11,9 @@
 
 <body>
 <div class='container' ng-controller='TaskCtrl'>
+    你好，<span class="username">{{<.Username >}}</span>
+    <span class="logout" ng-click='logout()'>退出</span>
+
     <h1 class='charcoal rounded-box'>ToDo</h1>
 
     <h3>{{tasks.length}} Tasks </h3>

@@ -14,7 +14,7 @@ function TaskCtrl($scope, $http) {
     };
 
     var refresh = function () {
-        return $http.get('/tasks/').success(function (data) {
+        return $http.get('/tasks').success(function (data) {
             $scope.tasks = data;
         }).error(logError);
     };
@@ -43,7 +43,13 @@ function TaskCtrl($scope, $http) {
                 $scope.todoText = '';
             })
         });
-    }
+    };
+
+    $scope.logout = function () {
+        $http.get('/logout').error(logError).success(function () {
+            console.log("============logout")
+        });
+    };
 
     refresh().then(function () {
         $scope.working = false;
