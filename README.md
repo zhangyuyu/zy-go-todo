@@ -24,9 +24,9 @@ Golang ToDo web application on Heroku.
 ### 2. 准备Procfile
   在文件Procfile中，配置运行的应用程序，例如：
 
-    ```
-    web: hello
-    ```
+```
+web: hello
+```
 
 ### 3. govendor依赖管理
 * 安装govendor
@@ -61,9 +61,10 @@ Golang ToDo web application on Heroku.
     ```
     
 ### 5. 部署
-    ```
-    git push heroku master
-    ```
+
+```
+git push heroku master
+```
 
 ### 6. 访问
 * 通过命令行，访问web应用
@@ -99,7 +100,7 @@ heroku config:set DB_DATABASE=heroku_2a001fea285944b
 程序会将上述环境变量，拼出来DATABASE_URL结构如下：
 DATABASE_URL='user:pass@tcp(us-cdbr-iron-east-05.cleardb.net:3306)/your_heroku_database'
 
-### 3. 链接数据库，创建初始数据
+### 3. 连接数据库，创建初始数据
 用上述DATABASE_UR中的`user:pass@host/databse`连接到数据库，手动创建Table `Task`
 ```sql
 
@@ -119,19 +120,48 @@ INSERT INTO `task` VALUES (1, 'GO', 0);
 
 ## 四、问题
 Beego & Angular JS ajax Redirect
-* 问题描述
+
+### 问题描述
 点击【退出】之后，页面并未进行跳转
 
-* 具体细节
-** 点击【退出】，路由跳转`/logout`
-** 随后会重定向到`/login`
-** task.js里面打印的data可以看出已经是`login.html`的页面代码
+### 具体细节
 
-* 原因
+* 点击【退出】，路由跳转`/logout`
+* 随后会重定向到`/login`
+* task.js里面打印的data可以看出已经是`login.html`的页面代码
+
+### 原因
 ajax无法获得控制页面跳转的参数，可以参见(beego的局限性和解决登录跳转问题)[http://blog.csdn.net/github_37320188/article/details/79107380]
 
-* 暂定措施
-改成`<form>`提交，可以参见(beego redirect跳转问题)[https://github.com/astaxie/beego/issues/2565]
+### 解决办法
+* 1.改成`<form>`提交，可以参见(beego redirect跳转问题)[https://github.com/astaxie/beego/issues/2565]
+```html
+  <form action="logout" method="get">
+    你好，<span class="username">{{<.Username >}}</span>
+    <button class="logout" type="submit">退出</button>
+    </form>
+```
+
+* 2.继续用ajax提交，修改服务器端代码，将原来的302响应改为json响应[Ajax 重定向 302](http://www.voidcn.com/article/p-eixprdfy-box.html)
+```
+服务器端：
+func (this *UserLogoutController) Logout() {
+	this.DelSession("userLogin")
+	this.DelSession("username")
+	this.Data["json"] = Response{Status: 302, Location: "/login"}
+	this.ServeJSON()
+}
+
+前端：
+$scope.logout = function () {
+    $http.get('/logout').error(logError).success(function (data) {
+        if (data.Status == 302) {
+            location.href = data.Location;
+        }
+    });
+};
+```
+
 
 ## 参考
 * [Building Web Apps with Go](https://www.gitbook.com/book/codegangsta/building-web-apps-with-go/details)

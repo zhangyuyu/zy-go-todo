@@ -50,7 +50,7 @@ function TaskCtrl($scope, $http) {
             if (data.Status == 302) {
                 location.href = data.Location;
             }
-    });
+        });
     };
 
     refresh().then(function () {
