@@ -39,5 +39,11 @@ type UserLogoutController struct {
 func (this *UserLogoutController) Logout() {
 	this.DelSession("userLogin")
 	this.DelSession("username")
-	this.Redirect("/login", 302)
+	this.Data["json"] = Response{Status: 302, Location: "/login"}
+	this.ServeJSON()
+}
+
+type Response struct {
+	Status   int64
+	Location string
 }

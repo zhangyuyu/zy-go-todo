@@ -45,12 +45,13 @@ function TaskCtrl($scope, $http) {
         });
     };
 
-    // $scope.logout = function () {
-    //     $http.get('/logout').error(logError).success(function (data) {
-    //         console.log("============logout")
-    //         console.log(data)
-    //     });
-    // };
+    $scope.logout = function () {
+        $http.get('/logout').error(logError).success(function (data) {
+            if (data.Status == 302) {
+                location.href = data.Location;
+            }
+    });
+    };
 
     refresh().then(function () {
         $scope.working = false;

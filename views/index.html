@@ -10,10 +10,8 @@
 
 <body>
 <div class='container' ng-controller='TaskCtrl'>
-    <form action="logout" method="get">
     你好，<span class="username">{{<.Username >}}</span>
-    <button class="logout" type="submit">退出</button>
-    </form>
+    <span class="logout" ng-click='logout()'>退出</span>
 
     <h1 class='charcoal rounded-box'>ToDo</h1>
 
